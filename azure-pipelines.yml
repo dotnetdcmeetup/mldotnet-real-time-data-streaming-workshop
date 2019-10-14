@@ -10,9 +10,14 @@ pool:
   vmImage: 'windows-latest'
 
 variables:
-  buildConfiguration: 'Release'  
+- group: fraud-detection
+- name: buildConfiguration
+  value: 'Release'
 
 steps:
+- script: 'net use X: \\storage7rju4hlugjceu.file.core.windows.net\data /u:storage7rju4hlugjceu $(filestorage.key)'
+  displayName: 'Map disk drive to Azure Files share folder'
+
 - script: dotnet build src/machine-learning/FraudPredictionTrainer/FraudPredictionTrainer.csproj --configuration $(buildConfiguration)
   displayName: 'Build Trainer Console App (dotnet build) $(buildConfiguration)'
 
